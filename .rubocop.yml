@@ -1,0 +1,4 @@
+AllCops:
+  NewCops: enable
+Metrics/BlockLength:
+  Max: 50 # Increased length for test file

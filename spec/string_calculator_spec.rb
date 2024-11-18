@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'string_calculator'
-
 RSpec.describe StringCalculator do
   describe '.add' do
     context 'when without delimiters' do
@@ -34,7 +33,7 @@ RSpec.describe StringCalculator do
 
     context 'when incorrect input' do
       it 'should raises an exception for negative numbers' do
-        expect { StringCalculator.add("1,-2,3,-4") }.to raise_error("negative numbers not allowed: -2, -4")
+        expect { StringCalculator.add('1,-2,3,-4') }.to raise_error('negative numbers not allowed: -2, -4')
       end
     end
   end
