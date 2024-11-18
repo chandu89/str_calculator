@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Adding pry as a debugging purpose
+require 'pry'
+
 # The StringCalculator class is responsible for performing
 # calculations on strings containing numbers.
 # It supports operations such as adding numbers from a
@@ -14,6 +17,6 @@ class StringCalculator
   def self.add(numbers)
     return 0 if numbers.empty?
 
-    numbers.split(',').map(&:to_i).sum
+    numbers.split(/,|\\n/).map(&:to_i).sum
   end
 end
