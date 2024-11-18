@@ -14,11 +14,16 @@ require 'pry'
 #   result = calculator.add("//;\n1;2") # => 3
 #
 class StringCalculator
-  SPLIT_BY_EXPRESSION = /,|\\n/.freeze
+  SPLIT_BY_EXPRESSION = /,|\\n|;/.freeze
 
   def self.add(numbers)
     return 0 if numbers.empty?
 
-    numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i).sum
+    if numbers.start_with?('//')
+      delimiter, numbers = numbers[2..].split("\n", 2)
+      numbers.split(delimiter).map(&:to_i).sum
+    else
+      numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i).sum
+    end
   end
 end
