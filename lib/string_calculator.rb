@@ -14,13 +14,13 @@ require 'pry'
 #   result = calculator.add("//;\n1;2") # => 3
 #
 class StringCalculator
-  SPLIT_BY_EXPRESSION = /,|\\n|;/.freeze
+  SPLIT_BY_EXPRESSION = /,|\\n|;|\$|\|/.freeze
 
   def self.add(numbers)
     return 0 if numbers.empty?
 
-    numbers_without_delimiters = split_by_delimiter(numbers)
-    nums = split_by_numbers(numbers_without_delimiters)
+    numbers = split_by_delimiter(numbers)
+    nums = split_by_numbers(numbers)
     validate_negative_numbers(nums)
     nums.sum
   end
