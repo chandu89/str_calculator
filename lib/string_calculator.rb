@@ -19,11 +19,25 @@ class StringCalculator
   def self.add(numbers)
     return 0 if numbers.empty?
 
-    if numbers.start_with?('//')
-      delimiter, numbers = numbers[2..].split("\n", 2)
-      numbers.split(delimiter).map(&:to_i).sum
-    else
-      numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i).sum
-    end
+    numbers_without_delimiters = split_by_delimiter(numbers)
+    nums = split_by_numbers(numbers_without_delimiters)
+    validate_negative_numbers(nums)
+    nums.sum
+  end
+
+  def self.split_by_delimiter(numbers)
+    return numbers unless numbers.start_with?('//')
+
+    _del, numbers = numbers[2..].split("\n", 2)
+    numbers
+  end
+
+  def self.split_by_numbers(numbers)
+    numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i)
+  end
+
+  def self.validate_negative_numbers(nums)
+    negatives = nums.select(&:negative?)
+    raise "negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
   end
 end
