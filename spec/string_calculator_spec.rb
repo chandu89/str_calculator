@@ -78,7 +78,7 @@ RSpec.describe StringCalculator do
 
     context 'when custom delimeter with *' do
       it "should return multiplied value" do
-        expect(StringCalculator.add("//*\n1*2")).to eq(2)
+        expect(StringCalculator.multiply("//*\n1*2")).to eq(2)
       end
     end
   end

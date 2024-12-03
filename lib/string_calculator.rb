@@ -17,31 +17,45 @@ require 'pry'
 class StringCalculator
   SPLIT_BY_EXPRESSION = /,|\\n/.freeze
 
-  def self.add(numbers)
-    return 0 if numbers.empty?
+  class << self 
+    def add(numbers)
+      return 0 if numbers.empty?
 
-    numbers, del = split_by_delimiter(numbers)
-    nums = split_by_numbers(numbers, del)
-    validate_negative_numbers(nums)
-    del == '*' ? nums.inject(:*) : nums.sum
-  end
+      nums = fetch_splitted_values(numbers)
+      nums.sum
+    end
 
-  def self.split_by_delimiter(numbers)
-    return [numbers] unless numbers.start_with?('//')
+    def multiply(numbers)
+      return 0 if numbers.empty?
 
-    del, numbers = numbers[2..].split("\n", 2)
-    [numbers.split(del).map(&:to_i), del]
-  end
+      nums = fetch_splitted_values(numbers)
+      nums.inject(:*) 
+    end
 
-  def self.split_by_numbers(numbers, del)
-    return  numbers unless del.nil?
+    def fetch_splitted_values(numbers)
+      numbers, del = split_by_delimiter(numbers)
+      nums = split_by_numbers(numbers, del)
+      validate_negative_numbers(nums)
+      nums
+    end
 
-    numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i)
-  end
+    def split_by_delimiter(numbers)
+      return [numbers] unless numbers.start_with?('//')
 
-  
-  def self.validate_negative_numbers(nums)
-    negatives = nums.select(&:negative?)
-    raise "negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
+      del, numbers = numbers[2..].split("\n", 2)
+      [numbers.split(del).map(&:to_i), del]
+    end
+
+    def split_by_numbers(numbers, del)
+      return  numbers unless del.nil?
+
+      numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i)
+    end
+
+
+    def  validate_negative_numbers(nums)
+      negatives = nums.select(&:negative?)
+      raise "negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
+    end
   end
 end
