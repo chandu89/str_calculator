@@ -15,21 +15,28 @@ require 'pry'
 #   result = calculator.add("//*\n1*2") # => 1*2
 #
 class StringCalculator
+  SPLIT_BY_EXPRESSION = /,|\\n/.freeze
+
   def self.add(numbers)
     return 0 if numbers.empty?
 
     numbers, del = split_by_delimiter(numbers)
-    validate_negative_numbers(numbers)
-    del == '*' ? numbers.inject(:*) : numbers.sum
+    nums = split_by_numbers(numbers, del)
+    validate_negative_numbers(nums)
+    del == '*' ? nums.inject(:*) : nums.sum
   end
 
   def self.split_by_delimiter(numbers)
-    unless numbers.start_with?('//')
-     return [numbers.split(',').map(&:to_i), 0]
-    end
+    return [numbers] unless numbers.start_with?('//')
 
     del, numbers = numbers[2..].split("\n", 2)
     [numbers.split(del).map(&:to_i), del]
+  end
+
+  def self.split_by_numbers(numbers, del)
+    return  numbers unless del.nil?
+
+    numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i)
   end
 
   
