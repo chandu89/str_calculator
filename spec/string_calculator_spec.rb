@@ -75,5 +75,11 @@ RSpec.describe StringCalculator do
         expect { StringCalculator.add('-1,-2,-3') }.to raise_error('negative numbers not allowed: -1, -2, -3')
       end
     end
+
+    context 'when custom delimeter with *' do
+      it "should return multiplied value" do
+        expect(StringCalculator.add("//*\n1*2")).to eq(2)
+      end
+    end
   end
 end

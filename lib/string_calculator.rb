@@ -12,30 +12,27 @@ require 'pry'
 #   calculator = StringCalculator.new
 #   result = calculator.add("1,2,3") # => 6
 #   result = calculator.add("//;\n1;2") # => 3
+#   result = calculator.add("//*\n1*2") # => 1*2
 #
 class StringCalculator
-  SPLIT_BY_EXPRESSION = /,|\\n|;|\$|\|/.freeze
-
   def self.add(numbers)
     return 0 if numbers.empty?
 
-    numbers = split_by_delimiter(numbers)
-    nums = split_by_numbers(numbers)
-    validate_negative_numbers(nums)
-    nums.sum
+    numbers, del = split_by_delimiter(numbers)
+    validate_negative_numbers(numbers)
+    del == '*' ? numbers.inject(:*) : numbers.sum
   end
 
   def self.split_by_delimiter(numbers)
-    return numbers unless numbers.start_with?('//')
+    unless numbers.start_with?('//')
+     return [numbers.split(',').map(&:to_i), 0]
+    end
 
-    _del, numbers = numbers[2..].split("\n", 2)
-    numbers
+    del, numbers = numbers[2..].split("\n", 2)
+    [numbers.split(del).map(&:to_i), del]
   end
 
-  def self.split_by_numbers(numbers)
-    numbers.split(SPLIT_BY_EXPRESSION).map(&:to_i)
-  end
-
+  
   def self.validate_negative_numbers(nums)
     negatives = nums.select(&:negative?)
     raise "negative numbers not allowed: #{negatives.join(', ')}" unless negatives.empty?
